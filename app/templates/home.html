@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
-{% block title %}HOME{% endblock %}
 {% block content %}
 {% load static %} 
     
     {% if user.is_authenticated %}
+    
         <div class="row">
             <div class="col-sm-12 mb-3">
                 <h4 class="text-center">
@@ -16,7 +16,7 @@
             <div class="container p-0">
                 <div class="card w-100">
                     <h1 class="h3 mb-3">{{ chat_room_title }}</h1>
-                    <div class="chat-messages p-4">
+                    <div class="chat-messages p-4" style="max-height: 600px; overflow-y: auto;">
                         {% for message in messages reversed %}
                             <div class="{% if message.user == user %}chat-message-right{% else %}chat-message-left{% endif %} pb-4">
                                 <div>
@@ -24,7 +24,7 @@
                                     <div class="text-muted small text-nowrap mt-2">
                                         {% load tz %}
                                         {% localtime on %}
-                                            {{ message.timestamp|date:"h:i A" }}
+                                            {{ message.timestamp|date:"d M h:i A" }}
                                         {% endlocaltime %}
                                     </div>
                                 </div>
@@ -41,6 +41,7 @@
                             </div>
                         {% endfor %}
                     </div>
+                    
                     <div class="flex-grow-0 py-3 px-4 border-top">
                         <form method="post" action="{% url 'home' %}">
                             {% csrf_token %}
@@ -56,11 +57,15 @@
         <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.bundle.min.js"></script>
         <script type="text/javascript">
-            // Add a click event listener to the logout icon
+            // Onclick Logout Button 
             document.getElementById('logout-icon').addEventListener('click', function() {
-                // Redirect to the logout URL
+                // Redirect to logout
                 window.location.href = "{% url 'logout' %}";
             });
+            
+            //When loaded go to last scrollview content
+            var chatMessagesDiv = document.querySelector('.chat-messages');
+            chatMessagesDiv.scrollTop = chatMessagesDiv.scrollHeight;
         </script>
     {% endif %}  
 {% endblock %}
