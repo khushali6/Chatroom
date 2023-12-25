@@ -37,7 +37,6 @@ class PublicRoomChatMessageAdmin(admin.ModelAdmin):
     show_full_result_count=False
     paginator=CachingPaginator
 
-# Do not register PublicRoomChatMessage again if it's already registered
 if not admin.site.is_registered(PublicRoomChatMessage):
     admin.site.register(PublicRoomChatMessage, PublicRoomChatMessageAdmin)
 
