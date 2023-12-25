@@ -15,7 +15,6 @@
         <main class="content">
             <div class="container p-0">
                 <div class="card w-100">
-                    <h1 class="h3 mb-3">{{ chat_room_title }}</h1>
                     <div class="chat-messages p-4" style="max-height: 600px; overflow-y: auto;">
                         {% for message in messages reversed %}
                             <div class="{% if message.user == user %}chat-message-right{% else %}chat-message-left{% endif %} pb-4">
@@ -50,6 +49,7 @@
                                 <button type="submit" class="btn btn-primary">Send</button>
                             </div>
                         </form>
+                        
                     </div>
                 </div>
             </div>
@@ -63,7 +63,7 @@
                 window.location.href = "{% url 'logout' %}";
             });
             
-            //When loaded go to last scrollview content
+            //When loaded go to the last scroll view content
             var chatMessagesDiv = document.querySelector('.chat-messages');
             chatMessagesDiv.scrollTop = chatMessagesDiv.scrollHeight;
         </script>

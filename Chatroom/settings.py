@@ -56,9 +56,11 @@ INSTALLED_APPS = [
 SITE_ID = 1
 
 LOGIN_URL = 'login'
-LOGIN_REDIRECT_URL = 'home'
+LOGIN_REDIRECT_URL = 'redirect_to_chat_room'
 LOGOUT_URL = 'logout'
 LOGOUT_REDIRECT_URL = 'login'
+SOCIAL_AUTH_LOGIN_REDIRECT_URL = 'redirect_to_chat_room'
+
 
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '260272475344-ap02i53ndblracohsr26dv0o7a7a6h82.apps.googleusercontent.com'
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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'

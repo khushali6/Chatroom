@@ -1,26 +1,19 @@
 # app/views.py
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from .models import PublicChatRoom, PublicRoomChatMessage
 from django.utils import timezone
 
 def login(request):
-    
     return render(request, 'login.html')
 
-from django.shortcuts import render, redirect
-from django.utils import timezone
-from django.contrib.auth.decorators import login_required
-from app.models import PublicChatRoom, PublicRoomChatMessage
 
 @login_required
 def home(request):
-    # Get or create the chat room titled "Django"
-    chat_room_title = "Django"
     user = request.user
 
-    # Get the chat room or create it if it doesn't exist
-    chat_room, created = PublicChatRoom.objects.get_or_create(title=chat_room_title)
+    # Get the chat room or create it if it doesn't exist (for simplicity, we'll use a fixed title)
+    chat_room, created = PublicChatRoom.objects.get_or_create(title='Django')
     
     # If the user is not already in the chat room, add them
     if user not in chat_room.users.all():
@@ -40,7 +33,11 @@ def home(request):
                 content=message_content
             )
 
-            # Redirect to the home page to avoid form resubmission on page refresh
+            # Redirect to the same chat room page to avoid form resubmission on page refresh
             return redirect('home')
 
-    return render(request, 'home.html', {'user': user, 'chat_room_title': chat_room_title, 'messages': messages})
+    return render(request, 'home.html', {'user': user, 'messages': messages})
+
+def redirect_to_chat_room(request):
+    # Redirect to the chat room (for simplicity, we'll use a fixed title)
+    return redirect('home')

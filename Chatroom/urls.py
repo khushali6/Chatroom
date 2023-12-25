@@ -48,4 +48,10 @@ urlpatterns = [
     path('', views.home, name='default_home'),
     path('app/', include('app.urls')),
     path('logout/', LogoutView.as_view(next_page='/'), name='logout'),
+    path('room/Django/', views.home, name='home'),
+    path('redirect_to_chat_room/', views.redirect_to_chat_room, name='redirect_to_chat_room'),
 ]
+
+
+
+
