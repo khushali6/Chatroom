@@ -7,20 +7,11 @@ from social_django import urls as social_django_urls  # Import social_django URL
 from django.core.paginator import Paginator
 from django.core.cache import cache
 from django.db import models
-from app.models import PublicChatMessageManager,PublicChatRoom,PublicRoomChatMessage
-
-class PublicChatRoomAdmin(admin.ModelAdmin):
-    list_display=['id','title']
-    search_fields=['id','title']
-    
-    class Meta:
-        model=PublicChatRoom
-
-admin.site.register(PublicChatRoom,PublicChatRoomAdmin)
+from app.models import PublicChatMessageManager, PublicRoomChatMessage
+from django.contrib.auth.views import LogoutView
 
 class CachingPaginator(Paginator):
     def _get_count(self):
-
         if not hasattr(self, "_count"):
             self._count = None
 
@@ -42,21 +33,19 @@ class PublicRoomChatMessageAdmin(admin.ModelAdmin):
     list_filter=['room','user','timestamp']
     list_display=['room','user','timestamp','content']
     search_fields=['room__title','user__username','content']
-    readonly_fields=['id','user','room','timestamp']
 
     show_full_result_count=False
     paginator=CachingPaginator
 
-    class Meta:
-        model=PublicRoomChatMessage
-
-admin.site.register(PublicRoomChatMessage,PublicRoomChatMessageAdmin)
+# Do not register PublicRoomChatMessage again if it's already registered
+if not admin.site.is_registered(PublicRoomChatMessage):
+    admin.site.register(PublicRoomChatMessage, PublicRoomChatMessageAdmin)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('login/', views.login, name='login'),
-    path('logout/', auth_views.LogoutView.as_view(next_page='/'), name='logout'),  # Redirect to home page after logout
     path('social-auth/', include('social_django.urls', namespace='social')),
-    path("", views.home, name='home'),
+    path('', views.home, name='default_home'),
     path('app/', include('app.urls')),
+    path('logout/', LogoutView.as_view(next_page='/'), name='logout'),
 ]

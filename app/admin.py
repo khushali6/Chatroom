@@ -1,3 +1,9 @@
+# app/admin.py
 from django.contrib import admin
+from .models import PublicChatRoom
 
-# Register your models here.
+class PublicChatRoomAdmin(admin.ModelAdmin):
+    list_display=['id','title']
+    search_fields=['id','title']
+
+admin.site.register(PublicChatRoom, PublicChatRoomAdmin)
