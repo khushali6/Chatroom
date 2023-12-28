@@ -2,6 +2,7 @@
 from django.contrib import admin
 from django.urls import path, include
 from django.contrib.auth import views as auth_views
+from Chatroom.Chatroom import settings
 from app import views
 from social_django import urls as social_django_urls  # Import social_django URLs
 from django.core.paginator import Paginator
@@ -9,7 +10,7 @@ from django.core.cache import cache
 from django.db import models
 from app.models import PublicChatMessageManager, PublicRoomChatMessage
 from django.contrib.auth.views import LogoutView
-
+from django.conf.urls.static import static
 class CachingPaginator(Paginator):
     def _get_count(self):
         if not hasattr(self, "_count"):
@@ -50,6 +51,9 @@ urlpatterns = [
     path('room/Django/', views.home, name='home'),
     path('redirect_to_chat_room/', views.redirect_to_chat_room, name='redirect_to_chat_room'),
 ]
+
+urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 
 
